@@ -7,8 +7,8 @@ const remainingGuessesSpan = document.querySelector (".remaining span");
 const message = document.querySelector (".message");
 const playAgainButton = document.querySelector (".play-again");
 
-const word = "magnolia";
-const allGuesses = [];
+const word = "magnolia"; //starter word, replace with API
+const guessedLetters = []; //array of guessed letters
 
 //placeholders//
 const placeholder = function (word) { 
@@ -51,10 +51,47 @@ const checkInput = function (input){
 //Captures the players input    
 const makeGuess = function (guess){
     guess = guess.toUpperCase ();
-    if (allGuesses.includes (guess)) {
+    if (guessedLetters.includes (guess)) {
         message.innerText = "This one again? Try another letter please :)";
     } else {
-        allGuesses.push(guess);
-        console.log(allGuesses);
+        guessedLetters.push(guess);
+        console.log(guessedLetters);
+        showGuessedLetters();
+        updateWord(guessedLetters);
     }
 };
+
+//Function to Show Guessed Letters
+const showGuessedLetters = function (){
+    guessedLettersElement.innerText = "";
+    for (const letter of guessedLetters){
+        const li = document.createElement ("li");
+        li.innerText = letter;
+        guessedLettersElement.append (li);
+    }
+};
+
+//Function to Update Work in Progress
+const updateWord = function (guessedLetters){
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split ("");
+    console.log(wordArray);
+    const revealWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes (letter)){
+            revealWord.push (letter.toUpperCase());
+        } else {
+            revealWord.push("●");
+         }
+      }
+      wordInProgress.innerText = revealWord.join("");  
+      checkIfWon();
+    };
+
+    //Create function to check if player won
+    const checkIfWon = function () {
+        if (word.toUpperCase() === wordInProgress.innerText) {
+            message.classList.add("win");
+            message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+        }
+    };
