@@ -1,9 +1,9 @@
 //Global Variables
-const guessedLettersElement = document.querySelector (".guessed-letters");
+const guessedLettersList = document.querySelector (".guessed-letters");
 const guessButton = document.querySelector (".guess");
 const letterInput = document.querySelector (".letter");
 const wordInProgress = document.querySelector (".word-in-progress");
-const remainingGuessesElement = document.querySelector (".remaining");
+const remainingGuessesPara = document.querySelector (".remaining");
 const remainingGuessesSpan = document.querySelector (".remaining span");
 const message = document.querySelector (".message");
 const playAgainButton = document.querySelector (".play-again"); 
@@ -78,11 +78,11 @@ const makeGuess = function (guess){
 
 //Function to Show Guessed Letters
 const showGuessedLetters = function (){
-    guessedLettersElement.innerText = "";
+    guessedLettersList.innerText = "";
     for (const letter of guessedLetters){
         const li = document.createElement ("li");
         li.innerText = letter;
-        guessedLettersElement.append (li);
+        guessedLettersList.append (li);
     }
 };
 
@@ -128,7 +128,36 @@ const remainingGuessCount = function (guess) {
         if (word.toUpperCase() === wordInProgress.innerText) {
             message.classList.add("win");
             message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+       
+            startOver();
         }
     };
 
-    //6/4 Completed Fetch Words & Remaining Guesses
+//Create a function to hide,show elements
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remainingGuessesPara.classList.add("hide");
+    guessedLettersList.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
+
+    //6/28 Next:Add a Click Event to the Play Again Button
+    //10/26 Add Click Even to Play Again Button
+
+    //add event listener
+playAgainButton.addEventListener ("click", function (){
+    message.classList.remove("win");
+    guessedLetters = [];
+    remainingGuesses = 8;
+    remainingGuessesSpan.innerText = `${remainingGuesses} guesses`;
+    guessedLettersList.innerHTML = "";
+    message.innerText = "";
+    // Grab new word
+    getWord();
+
+    //show the right UI elements
+    guessLetterButton.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+    remainingGuessesPara.classList.remove("hide");
+    guessedLettersList.classList.remove("hide");
+});
